@@ -1,0 +1,22 @@
+# Dependency directories
+node_modules/
+
+# Compiled JavaScript files
+dist/
+
+# Editor and IDE files
+.vscode/
+.idea/
+
+# Environment variables file
+.env
+
+# Logs
+*.log
+
+# Dependency lock files
+package-lock.json
+yarn.lock
+
+
+.DS_STORE
