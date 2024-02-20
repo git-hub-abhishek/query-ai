@@ -29,3 +29,6 @@ const prompt = "What is the capital of France?";
 callChatCompletion(prompt)
   .then((response) => console.log("ChatCompletion response:", response))
   .catch((error) => console.error(error));
+
+
+  

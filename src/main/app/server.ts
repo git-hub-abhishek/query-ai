@@ -1,12 +1,15 @@
 // esmodule top flag
 
 import * as express from "express";
+import { SelectController } from "./controllers/select-controller";
+import { openaiConnectService } from "./services/openaiConnectService";
 
 const app = express();
 const port = 3001;
 
-app.get('/', (req, res) => {
-    res.send('Hello, world!');
+app.get('/select', (req, res) => {
+    var  select = new SelectController(new openaiConnectService());
+    select.handleEvent(req, res);
 });
 
 app.listen(port, () => {
