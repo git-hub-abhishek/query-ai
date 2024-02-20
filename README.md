@@ -8,7 +8,7 @@ This project provides a RESTful API for querying a database using natural langua
 
 1. Clone the repository: `https://github.com/git-hub-abhishek/query-ai.git`
 2. Install dependencies: `npm install`
-3. Build typescript using `npx build`
+3. Build typescript using `npm build`
 
 ## Usage
 
