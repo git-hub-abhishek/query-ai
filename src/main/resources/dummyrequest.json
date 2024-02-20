@@ -1,0 +1,30 @@
+{
+    "action": "next",
+    "messages": [
+        {
+            "id": "aaa2a5db-0698-42a2-b98e-1f9ec13f44e8",
+            "author": {
+                "role": "user"
+            },
+            "content": {
+                "content_type": "text",
+                "parts": [
+                    "Consider this schema\n\nCREATE TABLE `follows` (\n  `following_user_id` integer,\n  `followed_user_id` integer,\n  `created_at` timestamp\n);\n\nCREATE TABLE `users` (\n  `id` integer PRIMARY KEY,\n  `username` varchar(255),\n  `role` varchar(255),\n  `created_at` timestamp\n);\n\nCREATE TABLE `posts` (\n  `id` integer PRIMARY KEY,\n  `title` varchar(255),\n  `body` text COMMENT 'Content of the post',\n  `user_id` integer,\n  `status` varchar(255),\n  `created_at` timestamp\n);\n\nALTER TABLE `posts` ADD FOREIGN KEY (`user_id`) REFERENCES `users` (`id`);\n\nALTER TABLE `follows` ADD FOREIGN KEY (`following_user_id`) REFERENCES `users` (`id`);\n\nALTER TABLE `follows` ADD FOREIGN KEY (`followed_user_id`) REFERENCES `users` (`id`);"
+                ]
+            },
+            "metadata": {}
+        }
+    ],
+    "conversation_id": "68b62d42-456d-4bb4-9682-70413b9a2c35",
+    "parent_message_id": "301b1d39-baeb-464d-8d49-bbe31ac55cbb",
+    "model": "text-davinci-002-render-sha",
+    "timezone_offset_min": 0,
+    "suggestions": [],
+    "history_and_training_disabled": false,
+    "arkose_token": null,
+    "conversation_mode": {
+        "kind": "primary_assistant"
+    },
+    "force_paragen": false,
+    "force_rate_limit": false
+}
