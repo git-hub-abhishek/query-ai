@@ -7,9 +7,9 @@ import { openaiConnectService } from "./services/openaiConnectService";
 const app = express();
 const port = 3001;
 
-app.get('/select', (req, res) => {
+app.get('/select', async (req, res) => {
     var  select = new SelectController(new openaiConnectService());
-    select.handleEvent(req, res);
+    await select.handleEvent(req, res);
 });
 
 app.listen(port, () => {
