@@ -1,0 +1,15 @@
+{
+    "model": "gpt-3.5-turbo",
+    "messages": [
+        {
+            "role": "user",
+            
+            "content": 
+            
+              
+                    "Consider this schema as tx_db_schema and answer subsequent questions with SQLs referring to this schema.\ntx_db_schema: \nCREATE TABLE `tx_follows` (\n  `following_user_id` integer PRIMARY KEY,\n  `followed_user_id` integer,\n  `created_at` timestamp\n);\nCREATE TABLE `tx_users` (\n  `id` integer PRIMARY KEY,\n  `username` varchar(255),\n  `role` varchar(255),\n  `created_at` timestamp\n);\nCREATE TABLE `tx_posts` (\n  `id` integer PRIMARY KEY,\n  `title` varchar(255),\n  `body` text COMMENT 'Content of the post',\n  `user_id` integer,\n  `status` varchar(255),\n  `created_at` timestamp\n);\n19:12\nALTER TABLE `tx_posts` ADD FOREIGN KEY (`user_id`) REFERENCES `users` (`id`);\nALTER TABLE `tx_follows` ADD FOREIGN KEY (`following_user_id`) REFERENCES `users` (`id`);\nALTER TABLE `tx_follows` ADD FOREIGN KEY (`followed_user_id`) REFERENCES `users` (`id`);"
+                
+            
+        }
+    ]
+}
