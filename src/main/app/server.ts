@@ -3,9 +3,12 @@
 import * as express from "express";
 import { SelectController } from "./controllers/select-controller";
 import { openaiConnectService } from "./services/openaiConnectService";
+import * as dotenv from "dotenv";
 
+dotenv.config();
 const app = express();
-const port = 3001;
+const port = process.env.PORT || 3000;
+
 
 app.get('/select', async (req, res) => {
     var  select = new SelectController(new openaiConnectService());
@@ -13,5 +16,6 @@ app.get('/select', async (req, res) => {
 });
 
 app.listen(port, () => {
+    
     console.log(`Server is running on port ${port}`);
 });
