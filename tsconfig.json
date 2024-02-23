@@ -18,9 +18,16 @@
       "allowSyntheticDefaultImports": true,
       "declaration": false,
       "listFiles": false,
+      
     },
+    "assets": [
+      "src/assets"
+    ],
+    
     "include": [
-      "src/**/*"
+      "src/**/*",
+      "src/**/*.html"
+      
     ],
     "exclude": [
       "test/**/*",
