@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Interactive Map</title>
+<style>
+  /* CSS for styling */
+  .map-container {
+    position: relative;
+    width: 100%;
+    max-width: 800px; /* Adjust as needed */
+    margin: 0 auto;
+  }
+  .key {
+    fill: steelblue;
+  }
+  .value {
+    fill: darkorange;
+  }
+  .text {
+    font-size: 14px;
+    font-family: Arial, sans-serif;
+    fill: white;
+    text-anchor: middle;
+  }
+</style>
+</head>
+<body>
+
+<div class="map-container" id="map-container"></div>
+
+<script>
+  // Your JSON data
+  const data = {
+    key1: ['v1', 'v2', 'v3', 'v4'],
+    key2: ['v5', 'v6'],
+    key3: ['v7', 'v8']
+  };
+
+  // Calculate total number of elements
+  const totalElements = Object.keys(data).length + Object.values(data).flat().length;
+
+  // Calculate radius and angle increment
+  const radius = Math.min(300, totalElements * 20);
+  const angleIncrement = 2 * Math.PI / totalElements;
+
+  // Create SVG container
+  const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+  svg.setAttribute("width", "100%");
+  svg.setAttribute("height", "500");
+
+  let index = 0;
+  let yOffset = 250;
+  let xOffset = 0;
+
+  // Draw keys (circles)
+  Object.keys(data).forEach((key, i) => {
+    const x = 400 + Math.cos(angleIncrement * index) * radius;
+    const y = yOffset + Math.sin(angleIncrement * index) * radius;
+
+    const circle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+    circle.setAttribute("cx", x);
+    circle.setAttribute("cy", y);
+    circle.setAttribute("r", 20);
+    circle.setAttribute("class", "key");
+    circle.setAttribute("data-index", i);
+    svg.appendChild(circle);
+
+    const text = document.createElementNS("http://www.w3.org/2000/svg", "text");
+    text.setAttribute("x", x);
+    text.setAttribute("y", y + 5);
+    text.setAttribute("class", "text");
+    text.textContent = key;
+    svg.appendChild(text);
+
+    index++;
+  });
+
+  // Draw values (rectangles)
+  Object.values(data).forEach((values, i) => {
+    const angleIncrementValues = angleIncrement / (values.length + 1);
+    values.forEach((value, j) => {
+      const x = 400 + Math.cos(angleIncrement * index) * radius;
+      const y = yOffset + Math.sin(angleIncrement * index) * radius;
+
+      const rect = document.createElementNS("http://www.w3.org/2000/svg", "rect");
+      rect.setAttribute("x", x - 50);
+      rect.setAttribute("y", y - 15);
+      rect.setAttribute("width", 100);
+      rect.setAttribute("height", 30);
+      rect.setAttribute("class", "value");
+      svg.appendChild(rect);
+
+      const text = document.createElementNS("http://www.w3.org/2000/svg", "text");
+      text.setAttribute("x", x);
+      text.setAttribute("y", y + 5);
+      text.setAttribute("class", "text");
+      text.textContent = value;
+      svg.appendChild(text);
+
+      index++;
+    });
+  });
+
+  // Append SVG to container
+  document.getElementById("map-container").appendChild(svg);
+</script>
+
+</body>
+</html>
