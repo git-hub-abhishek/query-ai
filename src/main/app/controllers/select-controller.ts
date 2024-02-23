@@ -13,10 +13,10 @@ export class SelectController {
         this.openaiConnectService = selectService;
     }
 
-    async handleEvent(req: Request, res: Response) {
-        const result = await this.openaiConnectService.initialise();
+    public async handleEvent(query: string) {
+        const result = await this.openaiConnectService.query(query);
         // set the response status code to 200 (OK) and body here
-        res.send(result);
+        return result
     }
 }
 

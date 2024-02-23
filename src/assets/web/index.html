@@ -3,8 +3,16 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Responsive Text Area</title>
+<title>Query AI</title>
 <style>
+
+
+    .counter{
+        padding: 10px 20px;
+        margin-top: 20px;}
+
+
+   
     body {
         font-family: Arial, sans-serif;
         margin: 0;
@@ -21,7 +29,7 @@
     }
     
     textarea {
-        width: 100%;
+        width: 95%;
         height: 100px;
         resize: vertical;
         border: 1px solid #ccc;
@@ -35,18 +43,70 @@
         font-size: 14px;
         color: #666;
     }
+
+    button {
+        padding: 10px 20px;
+        font-size: 16px;
+        background-color: #3339a5;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+   
+    #id-query-response {
+        margin-top: 20px;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        font-size: 16px;
+        color: #666;
+    }
+
 </style>
 </head>
 <body>
 
 <div class="container">
-    <textarea id="textArea" oninput="updateCounter()" maxlength="200" placeholder="Type something..."></textarea>
+    <h1>Query AI</h1>
+    <textarea id="id-query" oninput="updateCounter()" maxlength="200" placeholder="Type something..."></textarea>
     <div class="counter" id="counter">Characters remaining: 200</div>
+<button onclick="makeBackendCall()">Make Backend Call</button>
+<div id="id-query-response"></div>
+
+<script>
+    function makeBackendCall() {
+        // Perform the POST request to the API
+        // and handle the response
+        fetch('/select', {
+            method: 'POST',
+            // Add any necessary headers or body data
+            //polulate body from the text textAre
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ query: document.getElementById('id-query').value})
+
+        })
+        .then(response => response.json())
+        .then(data => {
+            // Display the response to the user
+            var responseDiv = document.getElementById('id-query-response');
+            responseDiv.textContent = 'Response: ' + JSON.stringify(data);
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+    }
+</script>
+    
+    
+
 </div>
 
 <script>
     function updateCounter() {
-        var textArea = document.getElementById('textArea');
+        var textArea = document.getElementById('id-query');
         var counter = document.getElementById('counter');
         var remainingChars = 200 - textArea.value.length;
         counter.textContent = 'Characters remaining: ' + remainingChars;

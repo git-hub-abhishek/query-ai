@@ -8,43 +8,43 @@ export class openaiConnectService {
     apiKey: process.env.OPENAI_API_KEY,
   });
 
-  private readline: ReadLine = createInterface({
-    input: process.stdin,
-    output: process.stdout,
-  });
+  // private readline: ReadLine = createInterface({
+  //   input: process.stdin,
+  //   output: process.stdout,
+  // });
 
-  private askQuestion(question: string): Promise<string> {
-    return new Promise((resolve, reject) => {
-      this.readline.question(question, (answer) => {
-        resolve(answer);
-      });
-    });
-  }
+  // private askQuestion(question: string): Promise<string> {
+  //   return new Promise((resolve, reject) => {
+  //     this.readline.question(question, (answer) => {
+  //       resolve(answer);
+  //     });
+  //   });
+  // }
 
   constructor() {
     console.log("openaiConnectService constructor");
   }
 
-  public async initialise(): Promise<void> {
+  public async query(userQuestion:string): Promise<string> {
     try {
       console.log("inside assistant block");
 
-      const file = await this.openai.files.create({
-        file: fs.createReadStream("tx_db_schema.sql"),
-        purpose: "assistants",
-      });
+      // const file = await this.openai.files.create({
+      //   file: fs.createReadStream("tx_db_schema.sql"),
+      //   purpose: "assistants",
+      // });
 
-      // Creating the assistant
-      const dbqueryAssistant = await this.openai.beta.assistants.create({
-        name: "Database Expert",
-        instructions:
-          "You are an expert dba. Considering the File attached, you must generate SQL's to answer questions.",
-        tools: [{ type: "code_interpreter" }],
-        model: "gpt-4-turbo-preview",
-        file_ids: [file.id]
-      });
+      // // Creating the assistant
+      // const dbqueryAssistant = await this.openai.beta.assistants.create({
+      //   name: "Database Expert",
+      //   instructions:
+      //     "You are an expert dba. Considering the File attached, you must generate SQL's to answer questions.",
+      //   tools: [{ type: "code_interpreter" }],
+      //   model: "gpt-4-turbo-preview",
+      //   file_ids: ['file-fGxWXrAKGdIkCHnwnTvR2ZWE']
+      // });
 
-      const dbqueryAssistantId = dbqueryAssistant.id;
+      const dbqueryAssistantId = 'asst_dJsubuap9rUwzItODnKpkQkb';
       console.log("assistant id is:", dbqueryAssistantId);
 
       console.log(
@@ -55,15 +55,16 @@ export class openaiConnectService {
       const threadId = thread.id;
       console.log("the thread id is:", threadId);
 
-      let keepAsking = true;
+      // let keepAsking = true;
 
-      while (keepAsking) {
-        const userQuestion = await this.askQuestion(
-          "\nWhat is your question? "
-        );
+     // while (keepAsking) {
+        //remove
+        // const userQuestion = await this.askQuestion(
+        //   "\nWhat is your question? "
+        // );
         await this.openai.beta.threads.messages.create(threadId, {
           role: "user",
-          content: userQuestion,
+          content: userQuestion+"instructions: you must generate SQL's to answer questions with sql schema mention in fileId: file-fGxWXrAKGdIkCHnwnTvR2ZWE",
         });
 
         const run = await this.openai.beta.threads.runs.create(threadId, {
@@ -93,19 +94,20 @@ export class openaiConnectService {
 
         if (lastMessageForRun) {
           console.log(lastMessageForRun.content);
+        
         }
+        return JSON.stringify(lastMessageForRun.content);
+        // const continueAsking = await this.askQuestion(
+        //   "Do you want to ask another question? (yes/no) "
+        // );
+        // keepAsking = continueAsking.toLowerCase() === "yes";
 
-        const continueAsking = await this.askQuestion(
-          "Do you want to ask another question? (yes/no) "
-        );
-        keepAsking = continueAsking.toLowerCase() === "yes";
+        // if (!keepAsking) {
+        //   console.log("Alrighty then, I hope you learned something!\n");
+        // }
+     // }
 
-        if (!keepAsking) {
-          console.log("Alrighty then, I hope you learned something!\n");
-        }
-      }
-
-      this.readline.close();
+      // this.readline.close();
     } catch (error) {
       console.error("Error calling ChatCompletion API:", error);
       throw error;
