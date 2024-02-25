@@ -3,9 +3,11 @@
 import * as express from "express";
 import { SelectController } from "./controllers/select-controller";
 import { openaiConnectService } from "./services/openaiConnectService";
+import { OpenAICompletionService } from "./services/openai-completion-service";
 import * as path from "path";
 import * as dotenv from "dotenv";
 import { json } from "body-parser";
+import { SelectWithCompletionController } from "./controllers/select-with-completion-controller";
 
 dotenv.config();
 const app = express();
@@ -21,6 +23,17 @@ app.post('/select', async (req, res) => {
     //add code for reading the request body
     console.log("inside select block"+req);
     var  select = new SelectController(new openaiConnectService());
+    res.send(await select.handleEvent(req.body.query));
+    
+});
+
+app.post('/select-completion', async (req, res) => {
+
+    
+
+    //add code for reading the request body
+    console.log("inside select block"+req);
+    var  select = new SelectWithCompletionController(new OpenAICompletionService());
     res.send(await select.handleEvent(req.body.query));
     
 });

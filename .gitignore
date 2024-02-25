@@ -7,6 +7,7 @@ dist/
 # Editor and IDE files
 .vscode/
 .idea/
+coverage/
 
 # Environment variables file
 .env

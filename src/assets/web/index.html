@@ -4,13 +4,20 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Query AI</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.25.0/themes/prism.min.css">
 <style>
 
+  .token.comment,
+  .token.prolog,
+  .token.doctype,
+  .token.cdata {
+    color: green; /* Comments color */
+  }
 
-    .counter{
-        padding: 10px 20px;
-        margin-top: 20px;}
-
+  .token.punctuation {
+    color: red; /* Punctuation color */
+  }
+   
 
    
     body {
@@ -42,6 +49,8 @@
     .counter {
         font-size: 14px;
         color: #666;
+        padding: 10px 20px;
+        margin-bottom: 10px;
     }
 
     button {
@@ -52,18 +61,23 @@
         border: none;
         border-radius: 5px;
         cursor: pointer;
+        margin-bottom: 10px;
     }
+ 
    
+
     #id-query-response {
-        margin-top: 20px;
-        padding: 10px;
-        border: 1px solid #ccc;
-        border-radius: 5px;
-        font-size: 16px;
-        color: #666;
+    padding: 10px;
+    border: 1px solid #ccc;
+    background-color: #f9f9f9;
+    font-family: monospace;
+    white-space: pre-wrap; /* Preserve line breaks */
     }
 
 </style>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.25.0/prism.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.25.0/components/prism-sql.min.js"></script>
 </head>
 <body>
 
@@ -71,14 +85,16 @@
     <h1>Query AI</h1>
     <textarea id="id-query" oninput="updateCounter()" maxlength="200" placeholder="Type something..."></textarea>
     <div class="counter" id="counter">Characters remaining: 200</div>
-<button onclick="makeBackendCall()">Make Backend Call</button>
-<div id="id-query-response"></div>
+<button onclick="makeBackendCall()">Submit Query</button>
+<div id="id-query-response" class="language-sql"></div>
 
 <script>
     function makeBackendCall() {
+        var responseDiv = document.getElementById('id-query-response');
+        responseDiv.textContent = "";
         // Perform the POST request to the API
         // and handle the response
-        fetch('/select', {
+        fetch('/select-completion', {
             method: 'POST',
             // Add any necessary headers or body data
             //polulate body from the text textAre
@@ -91,8 +107,9 @@
         .then(response => response.json())
         .then(data => {
             // Display the response to the user
-            var responseDiv = document.getElementById('id-query-response');
-            responseDiv.textContent = 'Response: ' + JSON.stringify(data);
+            
+            responseDiv.textContent = `${data}`;
+            Prism.highlightElement(responseDiv);
         })
         .catch(error => {
             console.error('Error:', error);
