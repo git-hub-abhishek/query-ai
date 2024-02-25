@@ -9,7 +9,7 @@
     "testwatch": "jest --watchAll",
     "start": "node dist/server.js",
     "build": "npm run build-ts",
-    "postbuild": "copyfiles -u 1 src/**/web/*.html src/**/*.json dist/",
+    "postbuild": "copyfiles -u 1 src/**/web/*.html src/**/*.json src/**/*.sql dist/",
     "build-ts": "tsc",
     "watch-ts": "tsc -w",
     "lint": "eslint src/**/**/* -f=html -o=sonarReport.html"
@@ -36,7 +36,8 @@
     "jest-cli": "^29.5.0",
     "jest-junit": "^14.0.1",
     "jest-when": "^3.5.1",
-    "ts-jest": "^29.1.1",
+    "ts-jest": "^29.1.2",
+    "ts-node": "^10.9.2",
     "typescript": "^5.3.3"
   }
 }
